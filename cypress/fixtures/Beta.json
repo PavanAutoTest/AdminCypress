@@ -1,0 +1,14 @@
+{
+    "FirstName":"autowebone",
+    "lastName":"user",
+    "Email":"automation",
+    "EditFirstName":"Edituser",
+    "EditEmail":"EditEmail",
+    "HuntGroupName":"automationhunt",
+    "InvalidUsername":"test",
+    "InvalidPassword":"abc",
+    "BaseURL":"http://localhost:5050/",
+    "username":"saasone",
+    "password":"abc@1234"
+
+}

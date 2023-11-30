@@ -1,0 +1,13 @@
+{   
+    "BaseURL":"http://localhost:5050/login/",
+    "username":"saasone",
+    "password":"abc@1234",
+    "AdminURL":"https://admin.beta-wspbx.com/",
+    "FirstName":"autowebtwo",
+    "lastName":"usertwo",
+    "Email":"automationtwo",
+    "EditFirstName":"Editusertwo",
+    "EditEmail":"EditEmailtwo",
+    "HuntGroupName":"automationhunt",
+    "Alert":"Hunt group created successfully"
+}

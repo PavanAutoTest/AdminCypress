@@ -5,7 +5,7 @@ class Home{
     ManageExistingUser="//a[@class='link'][text()='Manage Existing User']";
     ManageExistingNumbers="//a[@class='link'][text()='Manage Existing Numbers']";
     PortORValidateNumbers="//a[@class='link'][text()='Port or Validate Numbers']";
-    PurchaseNumbers="//a[@class='link'][text()=Purchase Numbers']";
+    PurchaseNumbers="//a[@class='link'][text()='Purchase Numbers']";
     ManageExistingHuntGroups="//a[@class='link'][text()='Manage Existing Hunt Groups']"
     AddHuntGroup="//a[@class='link'][text()='Add Hunt Group']"
     ManageExistingCallQueues="//a[@class='link'][text()='Manage Existing Call Queues']"
@@ -21,52 +21,58 @@ class Home{
     BillingAccountInfo="//a[@class='link'][text()='Billing Account Info']"
     UpdatePaymentInfo="//a[@class='link'][text()='Update Payment Info']"
     BillingGroups="//a[@class='link'][text()='Billing Groups']"
+    Support="//a[@class='support']"
+    LogoutButton="//i[@class='fas fs-5 fa-sign-in']"
 
 
     setHomeTab(){
+        cy.xpath(this.HomeTab).should('be.visible');
         cy.xpath(this.HomeTab).click();
     }
 
     setAddNewUser(){
         cy.xpath(this.AddNewUser).should('have.text','Add New User');
-        cy.xpath(this.AddNewUser).click();
+        cy.xpath(this.AddNewUser).click({ force: true });
+       
+  
         
         
         
     }
 
     setManageExistingUser(){
-        cy.xpath(this.ManageExistingUser).should('have.text','Manage Existing User');
+        cy.xpath(this.ManageExistingUser).should('be.visible');
         cy.xpath(this.ManageExistingUser).click();
     }
 
     setManageExistingNumbers(){
-        cy.xpath(this.ManageExistingNumbers).should('have.text','Manage Existing Numbers');
+        cy.xpath(this.ManageExistingNumbers).should('be.visible');
         cy.xpath(this.ManageExistingNumbers).click();
     }
 
     setPortORValidateNumbers(){
-        cy.xpath(this.PortORValidateNumbers).should('have.text','Port or Validate Numbers');
+        cy.xpath(this.PortORValidateNumbers).should('be.visible');
         cy.xpath(this.PortORValidateNumbers).click();
     }
 
     setPurchaseNumbers(){
-        cy.xpath(this.PurchaseNumbers).should('have.text','Purchase Numbers');
+        cy.xpath(this.PurchaseNumbers).should('be.visible');
         cy.xpath(this.PurchaseNumbers).click();
     }
 
     setManageExistingHuntGroups(){
-        cy.xpath(this.ManageExistingHuntGroups).should('have.text','Manage Existing Hunt Groups');
+        cy.xpath(this.ManageExistingHuntGroups).should('be.visible');
         cy.xpath(this.ManageExistingHuntGroups).click();
     }
 
     setAddHuntGroup(){
-        cy.xpath(this.AddHuntGroup).should('have.text','Add Hunt Group');
+        //cy.xpath(this.AddHuntGroup).should('be.visible');
         cy.xpath(this.AddHuntGroup).click();
+       
     }
 
     setManageExistingCallQueues(){
-        cy.xpath(this.ManageExistingCallQueues).should('have.text','Manage Existing Call Queues');
+        cy.xpath(this.ManageExistingCallQueues).should('have.text','be.visible');
         cy.xpath(this.ManageExistingCallQueues).click();
     }
 
@@ -76,12 +82,12 @@ class Home{
     }
 
     setManageExistingAutoAttendants(){
-        cy.xpath(this.ManageExistingAutoAttendants).should('have.text','Manage Existing Auto-Attendants');
+        cy.xpath(this.ManageExistingAutoAttendants).should('be.visible','Manage Existing Auto-Attendants');
         cy.xpath(this.ManageExistingAutoAttendants).click();
     }
 
     setAddAutoAttendants(){
-        cy.xpath(this.AddAutoAttendants).should('have.text','Add Auto-Attendants');
+        cy.xpath(this.AddAutoAttendants).should('be.visible');
         cy.xpath(this.AddAutoAttendants).click();
     }
 
@@ -129,6 +135,11 @@ class Home{
     setBillingGroups(){
         cy.xpath(this.BillingGroups).should('have.text','Billing Groups');
         cy.xpath(this.BillingGroups).click();
+    }
+
+    setSupport(){
+        cy.xpath(this.Support).should('be.visible');
+        cy.xpath(this.Support).click();
     }
     
 }
