@@ -66,7 +66,7 @@ describe('UsersTab',()=>{
   });
 
   beforeEach(() => {
-        
+    //cy.visit('http://localhost:5050/home')   
     //cy.viewport('macbook-15'); 
     cy.viewport(1920, 1080);
     cy.wait(2000)

@@ -35,11 +35,16 @@ module.exports = defineConfig({
       require('cypress-mochawesome-reporter/plugin')(on);
       if(config.env.CI){
         return{
-          excludeSpecPattern:['cypress/e2e/all.cy.js']
+          //excludeSpecPattern:['cypress/e2e/all.cy.js']
+          
         }
       }
+      
     },
-    excludeSpecPattern : process.env.CI ? 'cypress/e2e/all.cy.js' :[],
+    //excludeSpecPattern : process.env.CI ? 'cypress/e2e/all.cy.js' :[],
+    specPattern: 'cypress/e2e/all.cy.js',
+   
+   
     testIsolation: false,
     
   },
