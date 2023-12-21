@@ -15,6 +15,9 @@ describe('HuntGroupValidation',()=>{
     let fixtureData;
     let GroupName;
     let Extension;
+    let VoicemailPin;
+    let Email;
+    
     
    
 
@@ -25,6 +28,8 @@ describe('HuntGroupValidation',()=>{
           fixtureData = data;
           GroupName=custom.generateRandomString(10);
           Extension=custom.getRandomNumber();
+          VoicemailPin=custom.getRandomNumber_FiveDigit();
+          Email=fixtureData.Email+"@pandorarndlabs.com";
         });
       });
 
@@ -42,7 +47,7 @@ describe('HuntGroupValidation',()=>{
         phonesystem.setAddHuntGroupNameField(GroupName)
         phonesystem.setExtensionFieldField(Extension)
         users.setAddButton();
-        users.setUserCreationSuccessMessage("Group "+GroupName+" created successfully");
+        users.setSuccessMessage("Group "+GroupName+" created successfully");
         cy.wait(3000)
         users.setCloseButton();
         
@@ -72,8 +77,12 @@ describe('HuntGroupValidation',()=>{
     phonesystem.setSearchGroup(GroupName)
     phonesystem.setSelectGroup(GroupName)
     phonesystem.setAddNumberValidation() 
-  
-
+   phonesystem.setHunt_RoutingEdit("Sequential","20","autowebtwo","Group "+GroupName+" Updated Sucessfully.")
+    home.setHomeTab();
+    home.setManageExistingHuntGroups()
+    phonesystem.setSearchGroup(GroupName)
+    phonesystem.setSelectGroup(GroupName)
+    phonesystem.setHunt_VoicemailEdit(VoicemailPin,Email,"Group "+GroupName+" Updated Sucessfully.")
 
  
     });
@@ -86,7 +95,7 @@ describe('HuntGroupValidation',()=>{
         phonesystem.setSearchGroup(GroupName)
        phonesystem.setRemoveButton()
        users.setRemoveConfirmButton();
-       users.setUserCreationSuccessMessage("Group "+GroupName+" Deleted Successfully.");
+       users.setSuccessMessage("Group "+GroupName+" Deleted Successfully.");
 
      
 

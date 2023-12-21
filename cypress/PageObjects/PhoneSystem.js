@@ -20,22 +20,42 @@ class PhoneSystem{
     RemoveHuntGroup="//a[@class='ms-4']"
     AutoAssign="//div[text()='Extension']/../descendant::div/input"
     SaveChangesButton="//button[@role='button'][text()='Save Changes']"
-    AddNumbersButton="//button[text()='Add Numbers']"
+    AddNumbersButton="//div[text()='Telephone Numbers']/../descendant::button[text()='Add Numbers']"
     AddNumbersButton_AutoAttendant="//div[text()='Telephone Numbers']/../div/button[text()='Add Numbers']"
     SelectNumbers="//div[@class='chips chips-placeholder']/div[@class='numberadd']"
     AddButton="//button[text()='Add']";
     TelephoneNumbersField="//div[@class='chip chip-sm m-chip d-inline py-2 px-3']"
+    NoMatchingResultsFould="//td[@class='text-center'][text()='No matching results found']"
     ADDAutoAttendant="//button[text()='Add Auto-Attendant']"
     AutoAttendantGroupNameField="//strong[text()='Auto-Attendant Name']/../following::div[@class='form pt-1']/input"
     RemoveAutoAttendantGroup="//tbody[@class='datatable-body']/descendant::a"
     PurchaseNumber_SelectCode="//label[text()='Code']/../descendant::div/descendant::select"
     PurchaseNumber_SelectState="//label[text()='State']/../descendant::div/descendant::select"
+    RemoveConfirmButton="//button[@class='ripple ripple-surface btn btn-primary'][text()='Remove']"
     PurchaseNumber_SelectNXX="//label[text()='NXX']/../descendant::div/descendant::select"
     PurchaseNumber_SelectbillingGroups="//label[text()='Billing Groups']/../descendant::div/descendant::select"
     PurchaseNumber_QuantityField="//span[text()='Quantity']/../descendant::div/input"
     PhoneNumber_PurchaseButton="//button[text()='Purchase']"
     LoadingClass="//div[@class='tab-pane fade show active']/div[@class='loadingclass']"
     DeletePhoneNumbers="//div[@class='tab-pane fade show active']/descendant::div/table/tbody/tr[1]/td[5]/a"
+    Routing_RingDistribution="//div[text()='Ring Distribution']/../descendant::select"
+    Routing_OverallRingtime="//div[text()='Over All RingTime']/../descendant::input"
+    Routing_IfBusyNoAnswer="//div[text()='If Busy  :  No Answer']/../descendant::input[@class='form-control active autocomplete-input']"
+    Routing_PerSequenceRingingTime="//div[text()='Per Sequence Ring Time']/../descendant::input"
+    AlertSuccessMessage="//span[@class='alert-msg']"
+    Voicemail_Pin="//input[@name='voice_mail.vm_pin']"
+    Voicemail_PlayMessageTimeStamp="//div[@class='tel-numbers'][text()='Play Message Timestamp']/../descendant::span[@class='slider round']"
+    Voicemail_EmailNotification="//div[@class='tel-numbers'][text()='Email Notification']/../descendant::span[@class='slider round']"
+    Voicemail_DeleteAfterSendingMessages="//div[@class='tel-numbers'][text()='Delete After Sending Message']/../descendant::span[@class='slider round']"
+    Voicemail_IncludeTranscriptEmail="//div[@class='tel-numbers'][text()='Include Transcript in Email']/../descendant::span[@class='slider round']"
+    Voicemail_Broadcastvoicemail="//div[@class='tel-numbers'][text()='Boardcast Voicemails to Enter Account']/../descendant::span[@class='slider round']"
+   VoicemailEmailAdress="//input[@name='voice_mail.email_address']"
+   AA_DialByNameDirectories="//a[@class='nav-link'][text()='Dial By Name Directories']"
+   AA_Settings="//a[@class='nav-link'][text()='Settings']"
+   AddDirectoryList="//button[text()='Add Directory List']"
+   DirectotyName="//p[text()='Directory Name']/../descendant::input"
+   DirectoryType="//p[text()='Directory Type']/../descendant::select"
+   
 
     setAddHuntGroupNameField(GroupName){
         cy.xpath(this.HuntGroupNameField).should('be.visible')
@@ -51,6 +71,11 @@ class PhoneSystem{
     setAutoAttendantGroupNameField(GroupName){
         cy.xpath(this.AutoAttendantGroupNameField).should('be.visible')
         cy.xpath(this.AutoAttendantGroupNameField).type(GroupName)
+    }
+
+    setClickPhoneSystemTab(){
+        cy.xpath(this.PhoneSystemTab).should('be.visible')
+        cy.xpath(this.PhoneSystemTab).click();
     }
 
 
@@ -85,6 +110,10 @@ class PhoneSystem{
         cy.xpath(this.RemoveHuntGroup).click();
     }
 
+    setRemoveConfirmButton(){
+        cy.xpath(this.RemoveConfirmButton).should('be.visible');
+        cy.xpath(this.RemoveConfirmButton).click();
+    }
 
     setRemoveAutoAttendantButton(){
         cy.xpath(this.RemoveAutoAttendantGroup).should('be.visible')
@@ -112,8 +141,8 @@ class PhoneSystem{
     }
 
     setAddnumbersbutton_AutoAttendant(){
-        cy.xpath(this.AddNumbersButton_AutoAttendant).should('be.visible')
-        cy.xpath(this.AddNumbersButton_AutoAttendant).click();
+        cy.xpath(this.AddNumbersButton).should('be.visible')
+        cy.xpath(this.AddNumbersButton).click();
     }
 
     setSelectAddNumbers(){
@@ -342,9 +371,201 @@ class PhoneSystem{
             cy.xpath(this.DeletePhoneNumbers).click();
         } */
     
-      
-      
+        setRingDistribution(DistributionType){
+            cy.xpath(this.Routing_RingDistribution).scrollIntoView();
+            cy.xpath(this.Routing_RingDistribution).should('be.visible')
+            cy.xpath(this.Routing_RingDistribution).select(DistributionType)
+        }
 
+        setOverAllRingTime(RingTime){
+            cy.xpath(this.Routing_OverallRingtime).should('be.visible')
+            cy.xpath(this.Routing_OverallRingtime).clear()
+            cy.xpath(this.Routing_OverallRingtime).type(RingTime)
+        }
+
+        setIfBusyNoAnswer(VoiceMailUser){
+            cy.xpath(this.Routing_IfBusyNoAnswer).should('be.visible')
+            cy.wait(2000)
+            cy.xpath(this.Routing_IfBusyNoAnswer).clear()
+            cy.wait(2000)
+            cy.xpath("//div[text()='If Busy  :  No Answer']/../descendant::input[1]").type(VoiceMailUser)
+            cy.wait(2000)
+            cy.xpath("//li[@class='autocomplete-item'][contains(text(),'"+VoiceMailUser+"')]").should('be.visible')
+            cy.xpath("//li[@class='autocomplete-item'][contains(text(),'"+VoiceMailUser+"')]").click()
+        }
+
+        setSequenceRingTime(RingTime){
+            cy.xpath(this.Routing_PerSequenceRingingTime).should('be.visible')
+            cy.xpath(this.Routing_PerSequenceRingingTime).clear()
+            cy.xpath(this.Routing_PerSequenceRingingTime).type(RingTime)
+        }
+
+        setSuccessMessage(Alert){
+            let elementText;
+            cy.get('.alert-msg').invoke('text').should('eq',Alert);
+            cy.xpath(this.AlertSuccessMessage).invoke('text').then((text) =>{
+                elementText=text.trim();
+                cy.addContext(`The text is:${elementText}`)
+                cy.addContext(`Alert:${Alert}`)
+              
+    
+            });
+          
+            
+        }
+      
+      setHunt_RoutingEdit(DistributionType,RingTime,VoiceMailUser,Alert){
+        this.setRingDistribution(DistributionType)
+        this.setSequenceRingTime(RingTime)
+        this.setIfBusyNoAnswer(VoiceMailUser)
+        cy.wait(3000)
+        this.setSaveChangesButton()
+        this.setSuccessMessage(Alert)
+        cy.xpath("//div[text()='If Busy  :  No Answer']/../descendant::input[1]").invoke('attr','value').should('include',VoiceMailUser)
+
+      }
+
+
+      setVoicemail_pin(VoicemailPin){
+        cy.xpath(this.Voicemail_Pin).scrollIntoView();
+        cy.xpath(this.Voicemail_Pin).should('be.visible')
+        cy.xpath(this.Voicemail_Pin).clear()
+        cy.xpath(this.Voicemail_Pin).type(VoicemailPin)
+
+
+      }
+
+      setVoicemailPlaytimeStamp(){
+        cy.xpath(this.Voicemail_PlayMessageTimeStamp).should('be.visible')
+        cy.xpath(this.Voicemail_PlayMessageTimeStamp).click()
+      
+      }
+
+      setVoicemailEmailNotification(){
+        cy.xpath(this.Voicemail_EmailNotification).scrollIntoView();
+        cy.xpath(this.Voicemail_EmailNotification).should('be.visible')
+        cy.xpath(this.Voicemail_EmailNotification).click()
+      }
+
+      setVoicemailEmailAddress(Email){
+        cy.xpath(this.VoicemailEmailAdress).should('be.visible')
+        cy.xpath(this.VoicemailEmailAdress).clear()
+        cy.xpath(this.VoicemailEmailAdress).type(Email)
+      }
+
+      setVoicemailDeletAfterSendingMessage(){
+        cy.xpath(this.Voicemail_DeleteAfterSendingMessages).should('be.visible')
+        cy.xpath(this.Voicemail_DeleteAfterSendingMessages).click()
+      }
+
+      setVoicemailIncludeTranscriptEmail(){
+        cy.xpath(this.Voicemail_IncludeTranscriptEmail).should('be.visible')
+        cy.xpath(this.Voicemail_IncludeTranscriptEmail).click()
+      }
+
+      setVoicemail_BoradCastVoicemails(){
+        cy.xpath(this.Voicemail_Broadcastvoicemail).should('be.visible')
+        cy.xpath(this.Voicemail_Broadcastvoicemail).click()
+      }
+
+      setHunt_VoicemailEdit(VoicemailPin,Email,Alert){
+        this.setVoicemail_pin(VoicemailPin)
+        this.setVoicemailPlaytimeStamp()
+        //this.setVoicemailEmailNotification()
+        this.setVoicemailEmailAddress(Email)
+        //this.setVoicemailDeletAfterSendingMessage()
+        //this.setVoicemailIncludeTranscriptEmail()
+        this.setVoicemail_BoradCastVoicemails()
+        this.setSaveChangesButton()
+        this.setSuccessMessage(Alert)
+      }
+
+      setAA_RoutingEdit(RoutingUser,Alert){
+        cy.xpath("//div[@id='general'][text()='Routing']").scrollIntoView();
+        cy.xpath("//div[@class='tel-numbers'][contains(text(),'Press')]/../descendant::input[1]").then(($listItems) => {
+            const specificElement = $listItems.eq(0);
+            cy.wrap(specificElement).clear()
+        })
+        cy.wait(2000)
+        cy.xpath("//input[@class='form-control focused autocomplete-input']").should('be.visible')
+        cy.xpath("//input[@class='form-control focused autocomplete-input']").type(RoutingUser)
+        cy.wait(2000)
+        cy.xpath("//li[@class='autocomplete-item'][contains(text(),'"+RoutingUser+"')]").then(($listItems) => {
+            const specificElement = $listItems.eq(0);
+            cy.wrap(specificElement).click()
+        })
+        cy.wait(2000)
+        this.setSaveChangesButton()
+        this.setSuccessMessage(Alert)
+        cy.xpath("//input[@class='form-control active autocomplete-input']").invoke('attr','value').should('include',RoutingUser)
+
+      }
+
+      setNoMatchingResultsFound(){
+        cy.xpath(this.NoMatchingResultsFould).should('be.visible');
+      }
+
+
+      setClickDialByDircetory(){
+        cy.xpath(this.AA_DialByNameDirectories).should('be.visible')
+        cy.xpath(this.AA_DialByNameDirectories).click()
+      }
+
+      setClickAddDirectoryList(){
+        cy.xpath(this.AddDirectoryList).should('be.visible')
+        cy.xpath(this.AddDirectoryList).click()
+      }
+
+      setEnterDirectoryName(DirectotyName){
+        cy.xpath(this.DirectotyName).should('be.visible')
+        cy.xpath(this.DirectotyName).clear()
+        cy.xpath(this.DirectotyName).type(DirectotyName)
+      }
+
+      setSelectDirectoryType(DirectoryType){
+        cy.xpath(this.DirectoryType).should('be.visible')
+        cy.xpath(this.DirectoryType).select(DirectoryType)
+      }
+
+      setAA_ADDDialByDirectories(GroupName,DirectotyName,DirectoryType,Alert){
+        this.setClickPhoneSystemTab()
+        this.setAutoAttendants()
+        this.setSearchGroup(GroupName)
+        this.setSelectGroup(GroupName)
+        this.setClickDialByDircetory()
+        this.setClickAddDirectoryList()
+        this.setEnterDirectoryName(DirectotyName)
+       this.setSelectDirectoryType(DirectoryType)
+       this.setAddButton()
+       this.setSuccessMessage(Alert)
+       this.setClickPhoneSystemTab()
+       this.setAutoAttendants()
+       this.setSearchGroup(GroupName)
+       this.setSelectGroup(GroupName)
+       this.setClickDialByDircetory()
+       cy.xpath("//tbody[@class='datatable-body']/descendant::td[text()='"+DirectotyName+"']").should('be.visible')
+
+      }
+
+
+      setAA_DeleteDialByDirectories(GroupName,DirectotyName,Alert){
+        this.setClickPhoneSystemTab()
+        this.setAutoAttendants()
+        this.setSearchGroup(GroupName)
+        this.setSelectGroup(GroupName)
+        this.setClickDialByDircetory()
+        cy.xpath("//tbody[@class='datatable-body']/descendant::td[text()='"+DirectotyName+"']/../td/i").should('be.visible')
+        cy.xpath("//tbody[@class='datatable-body']/descendant::td[text()='"+DirectotyName+"']/../td/i").click()
+        this.setRemoveConfirmButton();
+        this.setSuccessMessage(Alert)
+        this.setClickPhoneSystemTab()
+        this.setAutoAttendants()
+        this.setSearchGroup(GroupName)
+        this.setSelectGroup(GroupName)
+        this.setClickDialByDircetory()
+        this.setNoMatchingResultsFound()
+
+      }
    
 
      

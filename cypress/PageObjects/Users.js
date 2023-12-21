@@ -1,5 +1,7 @@
+
 class Users{
-    
+   
+
     UsersTab="//i[@class='users_icon']"
     AddUsersButton="//h5[@class='w-100 dblock']/button[contains(text(),'+ ')]";
     FirstNameField="//div[@class='form pt-1 w-100']/input";
@@ -40,10 +42,44 @@ class Users{
     CallRecordingRadioButton="//div[@id='CallRecording']/../descendant::span[@class='slider round']"
     AllUserstoEditCallRecording="//div[text()='Allow User to edit Call Recording']/../div[@class='phoneselect']"
     RecordAllCalls="//div[text()='Record All Calls']/../div[@class='phoneselect']"
-    PlayCallRecordingBeep="//div[text()='Play Call Recording Beep']/../div[@class='phoneselect']"
+    PlayCallRecordingBeep="//div[text()='Play Call Recording Beep']/../div[@class='phoneselect']/descendant::span"
     CallRecordingPermission="//div[@class='tel-numbers'][contains(text(),'permission ')]/../descendant::select"
-    CallRecordinglink="//a[@class='nav-link'][contains(text(),'Call Recording')]"
-
+    CallRecordinglink="//a[@class='nav-link'][contains(text(),'Call Recording')]/.."
+    AddToGroupButton="//button[text()='Add to a Group']"
+    Searchgroup_User="//div[@class='col-12']/descendant::input[@placeholder='Search']"
+    AddAdminRoleButton="//button[contains(text(),'+')]"
+    AddAdminRole_NameField="//input[@type='text'][@class='w-100']"
+    AddAdminRole_DescriptionField="//textarea[@id='textAreaExample']"
+    AddAdminRole_ManageSeats="//p[text()='Manage Seats']/../descendant::span[@class='slider round']"
+    AddAdminRole_AddUsers="//p[text()='Add, Delete, and Edit Users']/../descendant::span[@class='slider round']"
+    AddAdminRole_AddAccounts="//p[text()='Add, delete and edit accounts settings and features']/../descendant::span[@class='slider round']"
+    AddAdminRole_ManageOtherAdmins="//p[text()='Manage other Admins']/../descendant::span[@class='slider round']"
+    AddAdminRole_AccessReports="//p[text()='Access user data in reports']/../descendant::span[@class='slider round']"
+    AddAdminRole_AccessCallrecordings="//p[text()='Access user call recordings']/../descendant::span[@class='slider round']"
+    AddAdminRole_AddPermissionRoles="//p[text()='Add, delete and edit Permission Roles']/../descendant::span[@class='slider round']"
+    AddAdminRole_AccessBillingSection="//p[text()='Access billing section']/../descendant::span[@class='slider round']"
+    AddAdminRole_Location1="//label[@for='inlineRadio1'][text()='All Location']"
+    AddAdminRole_Location2="//label[@for='inlineRadio2'][text()='Select Location']"
+    AddAdminRole_EditNameField="//div[@class='tel-numbers'][text()='Name']/../descendant::input"
+    AddAdminRole_EditDescriptionField="//div[@class='tel-numbers mt-3'][text()='Description']/../descendant::textarea"
+    DeleteRole="//td[text()='AutomationTest']/../td/i[@class='fas fa-xmark ms-4 text-primary']"
+    RoleName_Field="//div[@class='tel-numbers'][text()='Name']/../descendant::input"
+    RoleDescription_Field="//div[@class='tel-numbers mt-3'][text()='Description']/../descendant::textarea"
+    Roles_UsersTab="//ul[@class='nav nav-tabs mb-3']/descendant::a[text()='Users']"
+    Roles_SettingsTab="//ul[@class='nav nav-tabs mb-3']/descendant::a[text()='Settings']"
+    SearchField1="//label[@class='form-label'][text()='Search']/../input"
+    CallingSMS_AddNumbers="//div[text()='Telephone Numbers']/../descendant::button[text()='Add Numbers']"
+    SelectNumbers="//div[@class='chips chips-placeholder']/div[@class='numberadd']"
+    TelephoneNumbersField="//div[@class='chip chip-sm m-chip d-inline py-2 px-3']"
+    CallingSMS_CallingPermision="//div[@class='tel-numbers'][text()='Calling Permission']/../descendant::select"
+    ConferenceRadioButton="//div[@class='tel-numbers'][text()='Conference Bridge']/../descendant::span"
+    ConferenceName="//input[@name='conference.name']"
+    ConferenceExtension="//input[@name='conference.extension']"
+    Conference_AddNumbers="//div[@class='add-numbermain py-2']/button[text()='Add Numbers']"
+    ConferencePin="//input[@name='conference.pin']"
+    VoicemailMail="//input[@name='voice_mail.email_address']"
+    VoicemailFormat="//div[@class='tel-numbers'][text()='VoiceMail Format']/../descendant::select"
+    VoicemailPin="//div[@id='voicemail']/../descendant::div[text()='Pin']/../descendant::input"
 
     setAddUsersbutton(){
         cy.xpath(this.AddUsersButton).click();
@@ -54,6 +90,9 @@ class Users{
         cy.xpath(this.FirstNameField).should('be.visible')
         cy.xpath(this.FirstNameField).type(FirstName)
         cy.wait(1000)
+
+    
+       
     }
 
     setAddUser_LastNameField(lastName){
@@ -150,7 +189,7 @@ class Users{
         cy.xpath(this.RemoveConfirmButton).click();
     }
 
-    setUserCreationSuccessMessage(Alert){
+    setSuccessMessage(Alert){
         let elementText;
         cy.get('.alert-msg').invoke('text').should('eq',Alert);
         cy.xpath(this.UserCreationSuccessMessage).invoke('text').then((text) =>{
@@ -233,9 +272,7 @@ class Users{
    }
 
    setUserCallrecordingEdit(){
-    cy.xpath(this.CallRecordinglink).should('be.visible');
-    cy.xpath(this.CallRecordinglink).click();
-    cy.wait(3000)
+    cy.xpath(this.CallRecordingRadioButton).scrollIntoView();
     cy.xpath(this.CallRecordingRadioButton).should('be.visible');
     cy.xpath(this.CallRecordingRadioButton).click();
     cy.xpath(this.AllUserstoEditCallRecording).should('be.visible');
@@ -248,6 +285,255 @@ class Users{
     cy.xpath(this.CallRecordingPermission).select('View, Play, Download & Delete');
    }
 
+   setEditCallrecordingValidation(){
+    cy.xpath(this.CallRecordingPermission).scrollIntoView();
+    cy.xpath(this.CallRecordingPermission).should('be.visible');
+   }
+
+   setAddUsertoGroup(GroupName,Alert){
+    cy.xpath(this.AddToGroupButton).scrollIntoView();
+    cy.xpath(this.AddToGroupButton).should('be.visible');
+    cy.xpath(this.AddToGroupButton).click();
+    cy.xpath(this.Searchgroup_User).should('be.visible');
+    cy.xpath(this.Searchgroup_User).type(GroupName)
+    cy.xpath("//table[@class='table table-hover table-sm mt-3']/descendant::td[text()='"+GroupName+"']").should('be.visible');
+    cy.xpath("//table[@class='table table-hover table-sm mt-3']/descendant::td[text()='"+GroupName+"']").click();
+    cy.xpath(this.AddButton).should('be.visible');
+    cy.xpath(this.AddButton).click()
+    cy.get('.alert-msg').invoke('text').should('eq',Alert);
+    cy.xpath("//div[@class='ps-0 userEdit_GroupsTable']/descendant::tbody/descendant::td[text()='"+GroupName+"']").should('be.visible');
+   }
+
+   setPermissionTab(){
+    cy.xpath(this.RightSideList_PermissionRoles).should('be.visible');
+    cy.xpath(this.RightSideList_PermissionRoles).click();
+   }
+
+   setAddAdminRoleButton(){
+    cy.xpath(this.AddAdminRoleButton).should('be.visible');
+    cy.xpath(this.AddAdminRoleButton).click();
+   }
+
+   setAddAdminRole_NameField(RoleName){
+    cy.xpath(this.AddAdminRole_NameField).should('be.visible');
+    cy.xpath(this.AddAdminRole_NameField).clear()
+    cy.xpath(this.AddAdminRole_NameField).type(RoleName)
+   }
+
+   setAddAdminRole_DescriptionField(Description){
+    cy.xpath(this.AddAdminRole_DescriptionField).should('be.visible');
+    cy.xpath(this.AddAdminRole_DescriptionField).clear()
+    cy.xpath(this.AddAdminRole_DescriptionField).type(Description)
+   }
+
+   setSelect_Role_RadioButton(){
+    cy.xpath(this.AddAdminRole_ManageSeats).should('be.visible');
+    cy.xpath(this.AddAdminRole_ManageSeats).click()
+    cy.xpath(this.AddAdminRole_AddUsers).should('be.visible');
+    cy.xpath(this.AddAdminRole_AddUsers).click()
+    cy.xpath(this.AddAdminRole_AddAccounts).should('be.visible');
+    cy.xpath(this.AddAdminRole_AddAccounts).click()
+    cy.xpath(this.AddAdminRole_ManageOtherAdmins).should('be.visible');
+    cy.xpath(this.AddAdminRole_ManageOtherAdmins).click()
+    cy.xpath(this.AddAdminRole_AccessReports).should('be.visible');
+    cy.xpath(this.AddAdminRole_AccessReports).click()
+    cy.xpath(this.AddAdminRole_AccessCallrecordings).should('be.visible')
+    cy.xpath(this.AddAdminRole_AccessCallrecordings).click();
+    cy.xpath(this.AddAdminRole_AddPermissionRoles).should('be.visible')
+    cy.xpath(this.AddAdminRole_AddPermissionRoles).click()
+    cy.xpath(this.AddAdminRole_AccessBillingSection).should('be.visible')
+    cy.xpath(this.AddAdminRole_AccessBillingSection).click()
+    cy.xpath(this.AddButton).should('be.visible');
+    cy.xpath(this.AddButton).click()
+   }
+
+   setEditRoleDescriptionFieldValidation(Description){
+    cy.xpath("//p[@class='mt-1 mb-3 text-secondary'][text()='"+Description+"']").should('be.visible');
+   }
+
+   setAddAdminRole(RoleName,Description){
+    this.setAddAdminRoleButton()
+    this.setAddAdminRole_NameField(RoleName)
+    this.setAddAdminRole_DescriptionField(Description)
+    this.setSelect_Role_RadioButton()
+
+
+   }
+
+   setDeleteRole(RoleName){
+    cy.xpath("//td[text()='"+RoleName+"']/../td/i[@class='fas fa-xmark ms-4 text-primary']").should('be.visible');
+    cy.wait(5000)
+    cy.xpath("//td[text()='"+RoleName+"']/../td/i[@class='fas fa-xmark ms-4 text-primary']").click()
+   }
+
+   setEdit_RoleName(EditRoleName){
+    cy.xpath(this.RoleName_Field).should('be.visible')
+    cy.xpath(this.RoleName_Field).clear();
+    cy.xpath(this.RoleName_Field).type(EditRoleName)
+
+   }
+
+   setEdit_RoleDescription(EditRoleDescription){
+    cy.xpath(this.RoleDescription_Field).should('be.visible')
+    cy.xpath(this.RoleDescription_Field).clear();
+    cy.xpath(this.RoleDescription_Field).type(EditRoleDescription)
+   }
+
+   setEditRoleName_Description(EditRoleName,EditRoleDescription){
+    this.setEdit_RoleName(EditRoleName)
+    this.setEdit_RoleDescription(EditRoleDescription)
+    this.setSaveChangesButton()
+    this.setSuccessMessage("Role "+EditRoleName+" has been updated successfully");
+    this.setEditRoleDescriptionFieldValidation(EditRoleDescription)
+   }
+
+   setClick_Roles_UsersTab(){
+    cy.xpath(this.Roles_UsersTab).should('be.visible')
+    cy.xpath(this.Roles_UsersTab).click()
+
+   }
+
+   setClick_Roles_SettingsTab(){
+    cy.xpath(this.Roles_SettingsTab).should('be.visible')
+    cy.xpath(this.Roles_SettingsTab).click()
+   }
+
+   setClick_AddAdminRole(){
+    cy.xpath("//button[(text()='Add Admin Role')]").should('be.visible')
+    cy.xpath("//button[(text()='Add Admin Role')]").click()
+   }
+   setSearchGroup(GroupName){
+    cy.xpath(this.SearchField1).should('be.visible')
+    cy.xpath(this.SearchField1).type(GroupName)
+}
+
+   setAddUsertoRole(User){
+    cy.xpath("//table[@class='table table-hover table-sm mt-3']/descendant::tr[3]/td[1]").should('be.visible')
+    cy.xpath("//table[@class='table table-hover table-sm mt-3']/descendant::tr[3]/td[1]").click();
+    cy.xpath(this.AddButton).should('be.visible');
+    cy.xpath(this.AddButton).click()
+    cy.wait(5000)
+    this.setSaveChangesButton()
+   
+   
+   }
+
+   setAssignRole_User(User,EditRoleName){
+    this.setClick_Roles_UsersTab()
+    this.setClick_AddAdminRole()
+    this.setAddUsertoRole(User)
+    this.setSuccessMessage("Role "+EditRoleName+" has been updated successfully");
+   }
+
+   setDeleteRole_User(User,EditRoleName){
+    this.setClick_Roles_UsersTab()
+    this.setDeleteRole(User);
+    this.setSaveChangesButton()
+    this.setSuccessMessage("Role "+EditRoleName+" has been updated successfully");
+    this.setUsersTab()
+    this.setPermissionTab()
+    this.setSearchGroup(EditRoleName)
+    cy.xpath("//td[text()='"+EditRoleName+"']/../td[4]").invoke('text').should('eq',"0");
+   }
+
+
+   setAddnumbersbutton(){
+    cy.xpath(this.CallingSMS_AddNumbers).scrollIntoView()
+    cy.xpath(this.CallingSMS_AddNumbers).should('be.visible')
+    cy.xpath(this.CallingSMS_AddNumbers).click();
+}
+
+setSelectAddNumbers(){
+    cy.xpath(this.SelectNumbers).then(($listItems) => {
+        const specificElement = $listItems.eq(0);
+        cy.wrap(specificElement).click()
+    })
+}
+
+setAddNumberValidation(){
+    cy.xpath(this.TelephoneNumbersField).should('be.visible');
+ }
+
+ setSelectCallingPermission(PermissionType){
+    cy.xpath(this.CallingSMS_CallingPermision).scrollIntoView()
+    cy.xpath(this.CallingSMS_CallingPermision).should('be.visible');
+    cy.xpath(this.CallingSMS_CallingPermision).select(PermissionType)
+ }
+
+    setEditCalllingSMSSettings(PermissionType,Alert){
+        this.setAddnumbersbutton()
+        this.setSelectAddNumbers()
+        this.setAddButton()
+        this.setAddNumberValidation()
+        this.setSelectCallingPermission(PermissionType)
+        this.setSaveChangesButton()
+        cy.wait(3000)
+        this.setSuccessMessage(Alert);
+    }
+
+    setClickConfernceBridge(){
+        cy.xpath(this.ConferenceRadioButton).scrollIntoView()
+        cy.xpath(this.ConferenceRadioButton).should('be.visible')
+        cy.xpath(this.ConferenceRadioButton).click();
+    }
+
+    setSendConferenceName(ConferenceName){
+        cy.xpath(this.ConferenceName).should('be.visible')
+        cy.xpath(this.ConferenceName).clear()
+        cy.xpath(this.ConferenceName).type(ConferenceName)
+    }
+
+    setConfernceExetnsion(ConferencExtension){
+        cy.xpath(this.ConferenceExtension).should('be.visible')
+        cy.xpath(this.ConferenceExtension).clear()
+        cy.xpath(this.ConferenceExtension).type(ConferencExtension)
+
+    }
+
+    setConferenceAddnumbersbutton(){
+        cy.xpath(this.Conference_AddNumbers).should('be.visible')
+        cy.xpath(this.Conference_AddNumbers).click();
+    }
+
+    setConferncePin(ConferencePin){
+        cy.xpath(this.ConferencePin).should('be.visible')
+        cy.xpath(this.ConferencePin).clear()
+        cy.xpath(this.ConferencePin).type(ConferencePin)
+
+    }
+
+    setEditConfernceBridgeSettings(EditFirstName,EditEmail,ConferenceName,ConferencExtension,ConferencePin,Alert){
+     this.setUsersTab()
+     this.setSearch(EditFirstName)
+     this.setSelectUser(EditEmail)
+     this.setClickConfernceBridge()
+     this.setSendConferenceName(ConferenceName)
+     this.setConfernceExetnsion(ConferencExtension)
+     this.setConferenceAddnumbersbutton()
+     this.setSelectAddNumbers()
+     this.setAddButton()
+     this.setConferncePin(ConferencePin)
+     this.setSaveChangesButton()
+     cy.wait(3000)
+    this.setSuccessMessage(Alert);
+    cy.xpath(this.ConferencePin).should('be.visible')
+
+
+    }
+
+    setEditVoicemailSettings(VoicemailPin){
+        cy.xpath(this.VoicemailPin).scrollIntoView()
+        cy.xpath(this.VoicemailPin).should('be.visible')
+        cy.xpath(this.VoicemailPin).clear()
+        cy.xpath(this.VoicemailPin).type(VoicemailPin)
+
+    }
+
+    setVoiceMailPinValidation(VoicemailPin){
+        cy.xpath(this.VoicemailPin).scrollIntoView()
+        cy.xpath(this.VoicemailPin).should('be.visible')
+        cy.xpath(this.VoicemailPin).invoke('attr', 'value').should('eq',VoicemailPin);
+    }
 
 }
 

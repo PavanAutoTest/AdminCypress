@@ -37,7 +37,7 @@ beforeEach(() => {
             return cy.wrap(anotherResult);
         })
         .then((anotherResult) =>{
-            users.setUserCreationSuccessMessage("Phone Number Purchased successfully")
+            users.setSuccessMessage("Phone Number Purchased successfully")
             return cy.wrap(anotherResult);
         })
         .then((anotherResult)=>{
@@ -63,7 +63,7 @@ beforeEach(() => {
             return cy.wrap(anotherResult1);
           })
           .then((anotherResult1) =>{
-            users.setUserCreationSuccessMessage("Phone Number deleted successfully!")
+            users.setSuccessMessage("Phone Number deleted successfully!")
             return cy.wrap(anotherResult1);
           })
           .then((anotherResult1) =>{

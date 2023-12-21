@@ -9,6 +9,12 @@
     "InvalidPassword":"abc",
     "BaseURL":"http://localhost:5050/",
     "username":"saasone",
-    "password":"abc@1234"
+    "password":"abc@1234",
+    "RoleName":"AutomationRole",
+    "Description":"AutomationTest",
+    "EditRoleName":"EditAutomationRole",
+    "EditRoleDescription":"EditDescrptionAutomationTest",
+    "ConferenceName":"AutoConference"
+    
 
 }

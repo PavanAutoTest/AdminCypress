@@ -12,6 +12,8 @@ describe('AutoAttendantGroupValidation',()=>{
     let fixtureData;
     let GroupName;
     let Extension;
+    let DirectotyName;
+    let DirectoryType;
    
     
 
@@ -22,14 +24,16 @@ describe('AutoAttendantGroupValidation',()=>{
           fixtureData = data;
           GroupName=custom.generateRandomString(10);
           Extension=custom.getRandomNumber();
+          DirectotyName="automation"+custom.generateRandomString(4);
+          DirectoryType="Include_List"
          
         });
       });
 
       beforeEach(() => {
         
-        cy.viewport('macbook-15'); 
-        
+        //cy.viewport('macbook-15'); 
+        cy.viewport(1920, 1080);
       });
 
 
@@ -42,7 +46,7 @@ describe('AutoAttendantGroupValidation',()=>{
         phonesystem.setAutoAttendantGroupNameField(GroupName)
         phonesystem.setExtensionFieldField(Extension)
         users.setAddButton();
-        users.setUserCreationSuccessMessage("Auto Attendant Group "+GroupName+" created successfully");
+        users.setSuccessMessage("Auto Attendant Group "+GroupName+" created successfully");
         home.setHomeTab();
         home.setManageExistingAutoAttendants()
         phonesystem.setAutoAttendants()
@@ -62,12 +66,28 @@ describe('AutoAttendantGroupValidation',()=>{
       phonesystem.setAddnumbersbutton_AutoAttendant()
        phonesystem.setSelectAddNumbers()
       phonesystem.setAddButton();
-      phonesystem.setSaveChangesButton()
-      users.setUserCreationSuccessMessage("Auto-Attendant Group edited successfully");
+     // phonesystem.setSaveChangesButton()
+      //users.setSuccessMessage("Auto-Attendant Group edited successfully");
+      home.setHomeTab();
+      home.setManageExistingAutoAttendants()
       phonesystem.setSearchGroup(GroupName)
       phonesystem.setSelectGroup(GroupName)
       phonesystem.setAddNumberValidation() 
+      phonesystem.setAA_RoutingEdit("autowebtwo","Group "+GroupName+" Updated Sucessfully.")
     })
+
+
+
+    it('AddDirectoryList',()=>{
+      cy.log("&&&&AddDirectoryList&&&&&&")
+      phonesystem.setAA_ADDDialByDirectories(GroupName,DirectotyName,DirectoryType,"Directory "+DirectotyName+" Added successfully")
+    })
+
+    it('DeleteDirectoryList',()=>{
+      cy.log("&&&&DeleteDirectoryList&&&&&&")
+     phonesystem.setAA_DeleteDialByDirectories(GroupName,DirectotyName,"Group "+GroupName+" Updated Sucessfully.")
+    })
+
 
     it('DeleteAutoAttendantGroup',()=>{
       cy.log("&&&&DeleteAutoAttendantGroup&&&&&&")
@@ -77,7 +97,7 @@ describe('AutoAttendantGroupValidation',()=>{
       phonesystem.setSearchGroup(GroupName)
       phonesystem.setRemoveAutoAttendantButton()
        users.setRemoveConfirmButton();
-       users.setUserCreationSuccessMessage("Auto-Attendant Group deleted successfully!");
+       users.setSuccessMessage("Auto-Attendant Group deleted successfully!");
        phonesystem.setSearchGroup(GroupName)
        users.setNoMatchingResultsFound()
 
