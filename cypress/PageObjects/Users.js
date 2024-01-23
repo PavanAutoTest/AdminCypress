@@ -8,6 +8,7 @@ class Users{
     LastNameField="//strong[text()='Last Name']/../../div[@class='form pt-1']";
     EmailAdressField="//strong[text()='Email Address']/../following::div[@class='form pt-1']/input";
     ExtensionField="//input[@name='extension']"
+    ExtensionFailedAlert="//p[text()='Extension is not available']"
     CloseButton="//button[text()='Close']";
     SeatPlanDropDown="//strong[text()='Seat Plan']/../following::div[@class='form pt-1'][1]/div/select";
     SeatPlanDropDown1="//strong[text()='Seat Plan']/../following::div[1]/div/select/option";
@@ -80,6 +81,7 @@ class Users{
     VoicemailMail="//input[@name='voice_mail.email_address']"
     VoicemailFormat="//div[@class='tel-numbers'][text()='VoiceMail Format']/../descendant::select"
     VoicemailPin="//div[@id='voicemail']/../descendant::div[text()='Pin']/../descendant::input"
+   
 
     setAddUsersbutton(){
         cy.xpath(this.AddUsersButton).click();
@@ -124,6 +126,17 @@ class Users{
     setSelectExentsion(Extension){
         cy.xpath(this.ExtensionField).should('be.visible')
         cy.xpath(this.ExtensionField).type(Extension)
+        
+       /*  cy.xpath(this.ExtensionFailedAlert)
+        .should('not.be.visible')
+        .then(() => {
+          cy.log('Element is not visible');
+        })
+        .catch(() => {
+          cy.log('Element is visible or not found. Taking corrective actions.');
+          var val = Math.floor(1000 + Math.random() * 9000);
+          cy.xpath(this.ExtensionField).clear().type(val);
+        }); */
         cy.wait(1000)
     }
 

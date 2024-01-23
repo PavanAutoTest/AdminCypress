@@ -17,6 +17,7 @@ describe('HuntGroupValidation',()=>{
     let Extension;
     let VoicemailPin;
     let Email;
+    let SequentialCode=2;
     
     
    
@@ -35,7 +36,8 @@ describe('HuntGroupValidation',()=>{
 
       beforeEach(() => {
         //cy.viewport(1200, 800);
-        cy.viewport('macbook-15'); 
+        //cy.viewport('macbook-15'); 
+        cy.viewport(1920, 1080);
         
       });
 
@@ -57,21 +59,24 @@ describe('HuntGroupValidation',()=>{
       home.setHomeTab();
       home.setManageExistingHuntGroups()
       phonesystem.setSearchGroup(GroupName)
-      cy.then(() =>{
-        return phonesystem.getAuttoAssignedFieldText(GroupName)
-      })
-     .then((anotherResult) =>{
-    console.log(`Another Result: ${anotherResult}`);
-    phonesystem.setSelectGroup(GroupName)
-    //phonesystem.setExetensionFieldValidation(anotherResult) 
-   
-  })
+      phonesystem.setSelectGroup(GroupName)
     cy.wait(3000)
     phonesystem.setAddnumbersbutton()
     phonesystem.setSelectAddNumbers()
     phonesystem.setAddButton();
-    //phonesystem.setSaveChangesButton()
-    //users.setUserCreationSuccessMessage("Hunt Group edited successfully");
+    cy.then(() =>{
+        return phonesystem.getAddedNumber_SuccessMessage()
+    })
+    .then((GetPhoneNumber) =>{
+      console.log(`GetPhoneNumber: ${GetPhoneNumber}`);
+      home.setHomeTab();
+      home.setManageExistingNumbers();
+      phonesystem.setPhoneNumbers();
+      phonesystem.setassigned();
+      //cy.wait(50000)
+      phonesystem.setPhoneNumberSearch(GetPhoneNumber)
+    })
+    //cy.wait(500000)
     home.setHomeTab();
     home.setManageExistingHuntGroups()
     phonesystem.setSearchGroup(GroupName)
@@ -83,12 +88,34 @@ describe('HuntGroupValidation',()=>{
     phonesystem.setSearchGroup(GroupName)
     phonesystem.setSelectGroup(GroupName)
     phonesystem.setHunt_VoicemailEdit(VoicemailPin,Email,"Group "+GroupName+" Updated Sucessfully.")
+    cy.request('http://localhost:7070/api/hunt/2930')
+    .then((response) => {
+      expect(response.status).to.equal(200);
+          const GroupWithMatchingtitle = response.body.groups.find(group => group.title === `${GroupName}`);
+           const GroupCodeForMatchingtitle = GroupWithMatchingtitle.code;
+           cy.addContext(`agentIdForMatchingFname:${GroupCodeForMatchingtitle}`);
+          cy.request(`http://localhost:7070/api/hunt/2930/${GroupCodeForMatchingtitle}`)
+          .then((nextresponse) => {
+            cy.addContext(`Response Body:${JSON.stringify(nextresponse.body, null, 2)}`);
+            expect(nextresponse.status).to.equal(200);
+            const RoutingResults = nextresponse.body.routing;
+            const VoiceMailResults=nextresponse.body.voice_mail;
+            expect(RoutingResults).to.have.property('ring_dist',2);
+            expect(RoutingResults).to.have.property('per_seq_ring_time',20);
+            expect(VoiceMailResults).to.have.property('vm_pin',VoicemailPin);
+            expect(VoiceMailResults).to.have.property('play_msg_time_stmp',true);
+            expect(VoiceMailResults).to.have.property('broadcast_vm_to_account',true);
+            expect(VoiceMailResults).to.have.property('email_notify',true);
+            expect(VoiceMailResults).to.have.property('email_address',`${Email}`);
+
+          })
+    })
 
  
     });
 
 
-    it('DeleteHuntGroup',()=>{
+     it('DeleteHuntGroup',()=>{
       cy.log("&&&&&DeleteHuntGroup&&&&&")
         home.setHomeTab();
         home.setManageExistingHuntGroups()
@@ -99,7 +126,7 @@ describe('HuntGroupValidation',()=>{
 
      
 
-    }) 
+    })  
 
     
 

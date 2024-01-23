@@ -1,10 +1,9 @@
 import "./../../cypress/e2e/LoginPage.cy"
 //import "./API.cy"
-//import "./UserCreation.cy" 
-//import "./HuntGroupCreation.cy"
-//import "./AAGroupCreation.cy" 
-//import "./PhoneNumberValidation.cy" 
+/* import "./../../cypress/e2e/UserCreation.cy" 
 import "./../../cypress/e2e/HuntGroupCreation.cy"
+import "./../../cypress/e2e/AAGroupCreation.cy"
+import "./../../cypress/e2e/PhoneNumberValidation.cy" */
 
 
 

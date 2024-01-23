@@ -12,6 +12,7 @@ class Login{
     setUserName(username){
         console.log(`&&&UserName----${username}`)
         cy.addContext(`&&&UserName----${username}`);
+        cy.xpath(this.Username).clear();
        cy.xpath(this.Username).type(username)
        cy.xpath(this.NextButton).should('be.visible')
        cy.xpath(this.NextButton).click();

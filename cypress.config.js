@@ -16,7 +16,7 @@ const now = new Date();
     .toString()
     .padStart(2, "0")}`;
     console.log(`PATH--->${process.env.targetEnvironment}`)
-    const dynamicReportPath = `V:\\AdminReact\\TestReports\\${process.env.targetEnvironment}_${formattedDateTime}`;
+    const dynamicReportPath = `V:\\AdminNewUI\\TestReports\\${process.env.targetEnvironment}_${formattedDateTime}`;
 module.exports = defineConfig({
   
   

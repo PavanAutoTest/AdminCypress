@@ -55,6 +55,18 @@ class PhoneSystem{
    AddDirectoryList="//button[text()='Add Directory List']"
    DirectotyName="//p[text()='Directory Name']/../descendant::input"
    DirectoryType="//p[text()='Directory Type']/../descendant::select"
+   PhoneNumber_Search="//div[@class='tab-pane fade show active']/descendant::input[1]"
+   DeviceMap="//a[@class='nav-link'][text()='Device Map']"
+   PagingGroups="//a[@class='nav-link'][text()='Paging Groups']"
+   BLFGroups="//a[@class='nav-link'][text()='BLF Groups']"
+   IPPhone_Devices="//a[@class='nav-link'][text()='IP Phones & Devices']"
+   AddPagingGroupButton="//button[text()='Add Paging Group']"
+   PagingGroupNameField="//strong[text()='Paging Group Name']/../following::div/input[@name='groupname']"
+   GroupID="//strong[text()='Group ID']/../following::div/input[@name='groupno']"
+   AddBLFGroupButton="//button[text()='Add BLF Group']"
+   BLFGroupNameField="//strong[text()='BLF Group Name']/../div/input[@type='text']"
+   IPPhone_Devices_Assigned="//li[@class='nav-item']/a[text()='Assigned']"
+   IPPhone_Devices_UnAssigned="//li[@class='nav-item']/a[text()='Unassigned']"
    
 
     setAddHuntGroupNameField(GroupName){
@@ -107,7 +119,7 @@ class PhoneSystem{
        }
 
        setRemoveButton(){
-        cy.xpath(this.RemoveHuntGroup).click();
+        cy.xpath(this.RemoveAutoAttendantGroup).click();
     }
 
     setRemoveConfirmButton(){
@@ -146,6 +158,7 @@ class PhoneSystem{
     }
 
     setSelectAddNumbers(){
+      cy.wait(2000)
         cy.xpath(this.SelectNumbers).then(($listItems) => {
             const specificElement = $listItems.eq(0);
             cy.wrap(specificElement).click()
@@ -257,6 +270,12 @@ class PhoneSystem{
         cy.xpath(this.AssignedPhoneNumbers).should('be.visible')
         cy.xpath(this.AssignedPhoneNumbers).click();
         cy.xpath("//div[@class='tab-pane fade show active']/descendant::div/table/tbody").should('be.visible')
+    }
+
+    setPhoneNumberSearch(PhoneNumber){
+      cy.xpath(this.PhoneNumber_Search).should('be.visible')
+      cy.xpath(this.PhoneNumber_Search).type(PhoneNumber)
+      cy.xpath("//tbody[@class='datatable-body']/descendant::td[contains(text(),'"+PhoneNumber+"')]").should('be.visible')
     }
 
 
@@ -427,7 +446,7 @@ class PhoneSystem{
 
 
       setVoicemail_pin(VoicemailPin){
-        cy.xpath(this.Voicemail_Pin).scrollIntoView();
+        cy.xpath(this.Routing_RingDistribution).scrollIntoView();
         cy.xpath(this.Voicemail_Pin).should('be.visible')
         cy.xpath(this.Voicemail_Pin).clear()
         cy.xpath(this.Voicemail_Pin).type(VoicemailPin)
@@ -469,6 +488,7 @@ class PhoneSystem{
       }
 
       setHunt_VoicemailEdit(VoicemailPin,Email,Alert){
+        cy.wait(1000)
         this.setVoicemail_pin(VoicemailPin)
         this.setVoicemailPlaytimeStamp()
         //this.setVoicemailEmailNotification()
@@ -566,7 +586,42 @@ class PhoneSystem{
         this.setNoMatchingResultsFound()
 
       }
+
+
+      getAddedNumber_SuccessMessage(){
+        let elementText;
+        cy.xpath(this.AlertSuccessMessage).invoke('text').then((text) =>{
+            elementText=text.trim().replace(/\D/g, '');
+            //cy.addContext(`The text is:${elementText}`)
+            console.log(`The text is:${elementText}`)
+            return elementText;
+
+        });
+      }
    
+      setClickPagingGroupsTab(){
+        cy.xpath(this.PagingGroups).should('be.visible')
+        cy.xpath(this.PagingGroups).click()
+      }
+
+      setClickAddPagingGroupButton(){
+        cy.xpath(this.AddPagingGroupButton).should('be.visible')
+        cy.xpath(this.AddPagingGroupButton).click()
+      }
+
+      setEnterPagingGroupName(PagingGroupName){
+        cy.xpath(this.PagingGroupNameField).should('be.visible')
+        cy.xpath(this.PagingGroupNameField).type(PagingGroupName)
+
+      }
+
+      setSelectPagingGroup_ID(PagingGroupID){
+        cy.xpath(this.GroupID).should('be.visible')
+        cy.xpath(this.GroupID).clear()
+        cy.xpath(this.GroupID).type(PagingGroupID)
+      }
+
+    
 
      
     

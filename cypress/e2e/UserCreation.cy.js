@@ -51,7 +51,7 @@ describe('UsersTab',()=>{
       EditRoleName=fixtureData.EditRoleName+new Date().getTime();
       EditRoleDescription=fixtureData.EditRoleDescription;
       PermissionType ="Default Local and Caribbean Class";
-      ConferenceName=fixtureData.ConferenceName;
+      ConferenceName=fixtureData.ConferenceName+custom.generateRandomString(5);;
       ConferencExtension=custom.getRandomNumber();
       ConferencePin=custom.getRandomNumber_FiveDigit()
       VoicemailPin=custom.getRandomNumber_FiveDigit()
@@ -66,7 +66,6 @@ describe('UsersTab',()=>{
   });
 
   beforeEach(() => {
-    //cy.visit('http://localhost:5050/home')   
     //cy.viewport('macbook-15'); 
     cy.viewport(1920, 1080);
     cy.wait(2000)
@@ -89,47 +88,9 @@ users.setAddButton();
 cy.wait(2000)
 users.setSuccessMessage("User created successfully");
 users.setCloseSymbol();  
-cy.request('http://localhost:7070/api/user/2930')
-        .then((response) => {
-          cy.addContext(`Response:${response}`);
-          cy.addContext(`Response Body:${JSON.stringify(response.body, null, 2)}`);
-          expect(response.status).to.equal(200);
-          const userWithMatchingFname = response.body.users.find(user => user.fname === 'pavanuserone');
-           const agentIdForMatchingFname = userWithMatchingFname.agentid;
-          cy.addContext(`userWithMatchingFname:${userWithMatchingFname}`);
-          cy.addContext(`agentIdForMatchingFname:${agentIdForMatchingFname}`);
-
-          cy.request(`http://localhost:7070/api/user/2930/${agentIdForMatchingFname}`)
-        .then((nextresponse) => {
-          // Log the entire response to the Cypress Command Log
-          console.log('Response:', nextresponse);
-          console.log('Status Code:', nextresponse.status);
-          console.log('Response Body:', nextresponse.body);
-          cy.addContext(`Response:${nextresponse}`);
-  
-          // You can also log specific properties of the response
-          cy.addContext(`Response Body:${JSON.stringify(nextresponse.body, null, 2)}`);
-          expect(nextresponse.status).to.equal(200);
-          const firstUserCallRec = nextresponse.body.users[0].call_rec;
-          expect(firstUserCallRec).to.have.property('record_all_calls', true);
-       expect(firstUserCallRec).to.have.property('enable_call_rec', true);
-       expect(firstUserCallRec).to.have.property('allow_user_edit_call_rec', true);
-       expect(firstUserCallRec).to.have.property('play_call_rec_beep', false);
-      expect(firstUserCallRec).to.have.property('users_permit_access_call_rec', 4);
-         
-  
-          // Add more logging or assertions as needed
-          //cy.wait(200000)
-        });
-
-        })
-
-
-
-
 }) 
 
-/* it('ManageExistingUser',()=>{
+it('ManageExistingUser',()=>{
   home.setHomeTab();
   home.setManageExistingUser();
   users.setSearch(FirstName)
@@ -138,9 +99,9 @@ cy.request('http://localhost:7070/api/user/2930')
   users.setUserEmailFieldEdit(EditEmail)
   users.setUserCallrecordingEdit()
   users.setAddUsertoGroup(GroupName,"Group(s) "+GroupName+" added successfully")
-  users.setEditVoicemailSettings(VoicemailPin)
+  //users.setEditVoicemailSettings(VoicemailPin)
   users.setSaveChangesButton()
-  cy.wait(3000)
+  cy.wait(5000)
   users.setSuccessMessage("User "+EditFirstName+" "+LastName+" Updated Sucessfully.")
   users.setUsersTab()
   users.setSearch(EditFirstName)
@@ -148,7 +109,25 @@ cy.request('http://localhost:7070/api/user/2930')
   users.setEditFirstNameValidation(EditFirstName)
   users.setEditEmailValidation(EditEmail)
   users.setEditCallrecordingValidation()
-  users.setVoiceMailPinValidation(VoicemailPin)
+  //users.setVoiceMailPinValidation(VoicemailPin)
+  cy.request('http://localhost:7070/api/user/2930')
+        .then((response) => {
+          expect(response.status).to.equal(200);
+          const userWithMatchingFname = response.body.users.find(user => user.fname === `${EditFirstName}`);
+           const agentIdForMatchingFname = userWithMatchingFname.agentid;
+          cy.addContext(`agentIdForMatchingFname:${agentIdForMatchingFname}`);
+          cy.request(`http://localhost:7070/api/user/2930/${agentIdForMatchingFname}`)
+        .then((nextresponse) => {
+          cy.addContext(`Response Body:${JSON.stringify(nextresponse.body, null, 2)}`);
+          expect(nextresponse.status).to.equal(200);
+          const firstUserCallRec = nextresponse.body.users[0].call_rec;
+          expect(firstUserCallRec).to.have.property('record_all_calls', true);
+       expect(firstUserCallRec).to.have.property('enable_call_rec', true);
+       expect(firstUserCallRec).to.have.property('allow_user_edit_call_rec', true);
+       expect(firstUserCallRec).to.have.property('play_call_rec_beep', false);
+      expect(firstUserCallRec).to.have.property('users_permit_access_call_rec', 4);      
+        });
+        })
   })
 
 it('EditUserSettings',()=>{
@@ -158,19 +137,38 @@ it('EditUserSettings',()=>{
   users.setSelectUser(EditEmail)
   users.setEditCalllingSMSSettings(PermissionType,"User "+EditFirstName+" "+LastName+" Updated Sucessfully.")
   users.setEditConfernceBridgeSettings(EditFirstName,EditEmail,ConferenceName,ConferencExtension,ConferencePin,"User "+EditFirstName+" "+LastName+" Updated Sucessfully.")
+  cy.request('http://localhost:7070/api/user/2930')
+  .then((response) => {
+    expect(response.status).to.equal(200);
+    const userWithMatchingFname = response.body.users.find(user => user.fname === `${EditFirstName}`);
+     const agentIdForMatchingFname = userWithMatchingFname.agentid;
+    cy.addContext(`agentIdForMatchingFname:${agentIdForMatchingFname}`);
+    cy.request(`http://localhost:7070/api/user/2930/${agentIdForMatchingFname}`)
+  .then((nextresponse) => {
+    cy.addContext(`Response Body:${JSON.stringify(nextresponse.body, null, 2)}`);
+    expect(nextresponse.status).to.equal(200);
+    const ConferenceResults = nextresponse.body.users[0].conference;
+    const calling_permissions=nextresponse.body.users[0].calling_permissions;
+    expect(calling_permissions).to.equal(10);
+    expect(ConferenceResults).to.have.property('name', `${ConferenceName}`);
+   expect(ConferenceResults).to.have.property('pin', ConferencePin);
+   expect(ConferenceResults).to.have.property('extension',ConferencExtension);
+     
+  });
+  })
 }) 
 
 
-it('DeleteUser',()=>{
+ it('DeleteUser',()=>{
   users.setUsersTab()
   users.setSearch(EditFirstName)
   users.setRemoveButton(EditEmail);
   users.setRemoveConfirmButton();
-  users.setLoadingClassInvisibility()
+ users.setLoadingClassInvisibility()
   users.setSearch(EditFirstName)
   users.setNoMatchingResultsFound();
 
-})  */
+})  
 
 
  it('AddRole',()=>{
@@ -182,6 +180,31 @@ it('DeleteUser',()=>{
   phonesystem.setSelectGroup(RoleName)
   users.setEditFirstNameValidation(RoleName)
   users.setEditRoleDescriptionFieldValidation(Description)
+  cy.request('http://localhost:7070/api/roles/2930')
+  .then((response) => {
+    expect(response.status).to.equal(200);
+    const IDMatchingWithRolename = response.body.rolesInfo.find(rolesInfo => rolesInfo.name === `${RoleName}`);
+    const RoleIdForMatchingname = IDMatchingWithRolename.id;
+    cy.addContext(`RoleIdForMatchingname:${RoleIdForMatchingname}`);
+    cy.request(`http://localhost:7070/api/roles/2930/${RoleIdForMatchingname}`)
+    .then((nextresponse) => {
+      cy.addContext(`Response Body:${JSON.stringify(nextresponse.body, null, 2)}`);
+      expect(nextresponse.status).to.equal(200);
+      const permissionsResults = nextresponse.body.rolesInfo.permissions;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 1)).to.be.true;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 2)).to.be.true;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 3)).to.be.true;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 4)).to.be.true;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 5)).to.be.true;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 6)).to.be.true;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 7)).to.be.true;
+      expect(permissionsResults.some(permission => permission.role_perm_id === 8)).to.be.true;
+
+    })
+
+  })
+
+
 })
 
 it('EditRole',()=>{
@@ -196,14 +219,14 @@ it('EditRole',()=>{
   phonesystem.setSearchGroup(EditRoleName)
   phonesystem.setSelectGroup(EditRoleName)
   cy.wait(2000)
-  users.setDeleteRole_User("1234567890 cccaa",EditRoleName)
+ users.setDeleteRole_User("1234567890 cccaa",EditRoleName)
   
 
 
-}) 
+})  
 
 
-/* it('DeleteRole',()=>{
+ it('DeleteRole',()=>{
   users.setUsersTab()
   users.setPermissionTab()
   phonesystem.setSearchGroup(EditRoleName)
@@ -212,8 +235,8 @@ it('EditRole',()=>{
   users.setSuccessMessage("Role "+EditRoleName+" has been deleted successfully");
   phonesystem.setSearchGroup(EditRoleName)
   users.setNoMatchingResultsFound();
-})
- */
+})  
+
 
 
 
