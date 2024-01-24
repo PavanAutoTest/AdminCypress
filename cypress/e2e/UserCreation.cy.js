@@ -86,8 +86,9 @@ users.setSelectSeatTerm();
 users.setSelectExentsion(Extension)
 users.setAddButton();
 cy.wait(2000)
+users.setCloseSymbol(); 
 users.setSuccessMessage("User created successfully");
-users.setCloseSymbol();  
+ 
 }) 
 
 it('ManageExistingUser',()=>{
